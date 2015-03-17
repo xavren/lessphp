@@ -117,7 +117,7 @@ class lessc {
 
 		$this->addParsedFile($realPath);
 		$parser = $this->makeParser($realPath);
-		$root = $parser->parse(file_get_contents($realPath));
+		$root = $parser->parse($this->readFile($realPath));
 
 		// set the parents of all the block props
 		foreach ($root->props as $prop) {
@@ -1919,7 +1919,7 @@ class lessc {
 
 		$this->addParsedFile($fname);
 
-		$out = $this->compile(file_get_contents($fname), $fname);
+		$out = $this->compile($this->readFile($fname), $fname);
 
 		$this->importDir = $oldImport;
 
@@ -1929,6 +1929,11 @@ class lessc {
 
 		return $out;
 	}
+        
+        protected function readFile($filename)
+        {
+            return file_get_contents($filename);
+        }
 
 	// compile only if changed input has changed or output doesn't exist
 	public function checkedCompile($in, $out) {
